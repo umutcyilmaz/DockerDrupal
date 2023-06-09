@@ -16,10 +16,10 @@ services:
   database:
     image: bitnami/mariadb:latest
     environment:
-      - MYSQL_DATABASE=drupal
-      - MYSQL_USER=drupal
-      - MYSQL_PASSWORD=drupal
-      - MYSQL_ROOT_PASSWORD=root
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=YAM428
+      - MARIADB_PASSWORD=3071032
+      - MARIADB_DATABASE=final
 
   webserver:
     image: nginx
@@ -36,4 +36,3 @@ services:
     volumes:
       - ./certbot:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-
