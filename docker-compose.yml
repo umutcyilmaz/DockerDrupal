@@ -1,0 +1,39 @@
+version: '3'
+services:
+  drupal:
+    image: bitnami/drupal:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+    environment:
+      - DRUPAL_DATABASE_HOST=database
+      - DRUPAL_DATABASE_PORT_NUMBER=3306
+      - DRUPAL_DATABASE_NAME=drupal
+      - DRUPAL_DATABASE_USER=drupal
+      - DRUPAL_DATABASE_PASSWORD=drupal
+
+  database:
+    image: bitnami/mariadb:latest
+    environment:
+      - MYSQL_DATABASE=drupal
+      - MYSQL_USER=drupal
+      - MYSQL_PASSWORD=drupal
+      - MYSQL_ROOT_PASSWORD=root
+
+  webserver:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./drupal.conf:/etc/nginx/conf.d/drupal.conf
+    depends_on:
+      - drupal
+
+  certificate:
+    image: certbot
+    volumes:
+      - ./certbot:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+
